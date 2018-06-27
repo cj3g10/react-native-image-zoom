@@ -7,7 +7,8 @@ import {
   Platform,
   PlatformOSType,
   StyleSheet,
-  View
+  View,
+  Dimensions
 } from 'react-native';
 import styles from './image-zoom.style';
 import { ICenterOn, Props, State } from './image-zoom.type';
@@ -82,6 +83,9 @@ export default class ImageViewer extends React.Component<Props, State> {
 
   // 是否在左右滑
   private isHorizontalWrap = false;
+
+  private deviceHeight = Dimensions.get('window').height;
+  private deviceWidth = Dimensions.get('window').width;
 
   public componentWillMount() {
     this.imagePanResponder = PanResponder.create({
@@ -481,7 +485,11 @@ export default class ImageViewer extends React.Component<Props, State> {
   public panResponderReleaseResolve = () => {
     // 判断是否是 swipeDown
     if (this.props.enableSwipeDown && this.props.swipeDownThreshold) {
-      if (this.swipeDownOffset > this.props.swipeDownThreshold) {
+      let swipeDownThreshold = this.props.swipeDownThreshold;
+      if (this.deviceWidth > this.deviceHeight) {
+        swipeDownThreshold = (swipeDownThreshold / this.deviceHeight) * this.deviceWidth;
+      }
+      if (this.swipeDownOffset > swipeDownThreshold) {
         if (this.props.onSwipeDown) {
           this.props.onSwipeDown();
         }
