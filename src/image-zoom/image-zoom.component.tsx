@@ -84,9 +84,6 @@ export default class ImageViewer extends React.Component<Props, State> {
   // 是否在左右滑
   private isHorizontalWrap = false;
 
-  private deviceHeight = Dimensions.get('window').height;
-  private deviceWidth = Dimensions.get('window').width;
-
   public componentWillMount() {
     this.imagePanResponder = PanResponder.create({
       // 要求成为响应者：
@@ -486,8 +483,10 @@ export default class ImageViewer extends React.Component<Props, State> {
     // 判断是否是 swipeDown
     if (this.props.enableSwipeDown && this.props.swipeDownThreshold) {
       let swipeDownThreshold = this.props.swipeDownThreshold;
-      if (this.deviceWidth > this.deviceHeight) {
-        swipeDownThreshold = (swipeDownThreshold / this.deviceHeight) * this.deviceWidth;
+      const deviceHeight = Dimensions.get('window').height;
+      const deviceWidth = Dimensions.get('window').width;
+      if (deviceWidth > deviceHeight) {
+        swipeDownThreshold = (swipeDownThreshold / deviceWidth) * deviceHeight;
       }
       if (this.swipeDownOffset > swipeDownThreshold) {
         if (this.props.onSwipeDown) {
