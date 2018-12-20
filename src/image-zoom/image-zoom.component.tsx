@@ -335,10 +335,6 @@ export default class ImageViewer extends React.Component<Props, State> {
                 // 只要滑动溢出量不小于 0，就可以拖动
                 this.positionY += diffY / this.scale;
                 this.animatedPositionY.setValue(this.positionY);
-
-                // 越到下方，缩放越小
-                this.scale = this.scale - Math.abs(diffY) / 1000;
-                this.animatedScale.setValue(this.scale);
               }
             }
           }
